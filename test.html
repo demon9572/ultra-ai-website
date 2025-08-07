@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UltraAI Test</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1 class="hero-title">UltraAI Test Page</h1>
+        <p class="hero-subtitle">Testing all functionality</p>
+    </header>
+    
+    <main>
+        <section class="features">
+            <button id="downloadButton" class="btn" data-translate="download">Download UltraAI Info</button>
+            <div id="test-results" style="margin-top: 20px; padding: 20px; background: #f0f0f0; border-radius: 5px;">
+                <h3>Test Results:</h3>
+                <ul id="results-list"></ul>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        // Test script to validate functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const resultsList = document.getElementById('results-list');
+            
+            function addResult(test, passed) {
+                const li = document.createElement('li');
+                li.textContent = `${test}: ${passed ? '✅ PASS' : '❌ FAIL'}`;
+                li.style.color = passed ? 'green' : 'red';
+                resultsList.appendChild(li);
+            }
+            
+            // Test 1: Download button exists
+            const downloadBtn = document.getElementById('downloadButton');
+            addResult('Download button exists', !!downloadBtn);
+            
+            // Test 2: Analytics object exists
+            addResult('Analytics object exists', typeof analytics === 'object');
+            
+            // Test 3: getLocalizedString function works
+            const testString = getLocalizedString('download');
+            addResult('Localization works', typeof testString === 'string' && testString.length > 0);
+            
+            // Test 4: Speech synthesis available
+            addResult('Speech synthesis available', 'speechSynthesis' in window);
+            
+            // Test 5: Dark mode toggle exists
+            setTimeout(() => {
+                const darkModeToggle = document.querySelector('.dark-mode-toggle');
+                addResult('Dark mode toggle created', !!darkModeToggle);
+            }, 500);
+            
+            // Test 6: Language selector exists
+            setTimeout(() => {
+                const langSelector = document.querySelector('.language-selector');
+                addResult('Language selector created', !!langSelector);
+            }, 500);
+            
+            // Test 7: Chatbot exists
+            setTimeout(() => {
+                const chatbot = document.querySelector('.chatbot-container');
+                addResult('Chatbot created', !!chatbot);
+            }, 500);
+            
+            // Test 8: Copy button exists
+            setTimeout(() => {
+                const copyBtn = document.querySelector('.copy-btn');
+                addResult('Copy button created', !!copyBtn);
+            }, 500);
+        });
+    </script>
+</body>
+</html>

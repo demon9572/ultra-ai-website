@@ -1,1 +1,161 @@
-<!DOCTYPE html>\r\n<html lang=\"en\">\r\n<head>\r\n    <meta charset=\"UTF-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n    <title>UltraAI Website</title>\r\n    <link rel=\"stylesheet\" href=\"styles.css\">\r\n</head>\r\n<body>\r\n    <h1>Welcome to UltraAI</h1>\r\n    <p>Your intelligent assistant.</p>\r\n    <button id=\"downloadButton\" class=\"btn\">Download UltraAI Info</button>\r\n\r\n    <script src=\"script.js\"></script>\r\n</body>\r\n</html>\r\n
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UltraAI - Your Intelligent Assistant</title>
+    <link rel="stylesheet" href="styles.css">
+    <meta name="description" content="UltraAI is an intelligent web application with voice commands, chatbot, and multiple language support.">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">UltraAI</div>
+        <ul class="nav-menu">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <header id="home" class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Welcome to UltraAI</h1>
+            <p class="hero-subtitle">Your intelligent assistant powered by advanced AI technology</p>
+            <div class="hero-buttons">
+                <button id="downloadButton" class="btn btn-primary" data-translate="download">Download UltraAI Info</button>
+                <button class="btn btn-secondary" onclick="document.getElementById('features').scrollIntoView()">Learn More</button>
+            </div>
+        </div>
+    </header>
+    
+    <main>
+        <section id="features" class="features-section">
+            <div class="container">
+                <h2 class="section-title">Features</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🌙</div>
+                        <h3>Dark Mode</h3>
+                        <p>Switch between light and dark themes for comfortable viewing</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🗣️</div>
+                        <h3>Voice Commands</h3>
+                        <p>Control the AI with your voice - ask for jokes, time, or downloads</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">💬</div>
+                        <h3>Smart Chatbot</h3>
+                        <p>Have natural conversations with our advanced AI assistant</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🌍</div>
+                        <h3>Multi-Language</h3>
+                        <p>Available in 8 languages including English, Spanish, French, and more</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3>Analytics</h3>
+                        <p>Track interactions and downloads with built-in analytics</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📱</div>
+                        <h3>Responsive Design</h3>
+                        <p>Works perfectly on desktop, tablet, and mobile devices</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="about-section">
+            <div class="container">
+                <h2 class="section-title">About UltraAI</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p>UltraAI represents the cutting edge of web-based artificial intelligence. Our platform combines advanced natural language processing with intuitive user interfaces to create an unparalleled digital assistant experience.</p>
+                        <p>Built with modern web technologies, UltraAI offers seamless integration across devices and platforms, making AI assistance accessible to everyone.</p>
+                        <div class="stats">
+                            <div class="stat">
+                                <h3>8</h3>
+                                <p>Languages Supported</p>
+                            </div>
+                            <div class="stat">
+                                <h3>24/7</h3>
+                                <p>Available</p>
+                            </div>
+                            <div class="stat">
+                                <h3>100%</h3>
+                                <p>Free to Use</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about-image">
+                        <div class="ai-visualization">
+                            <div class="ai-circle"></div>
+                            <div class="ai-pulse"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="demo-section">
+            <div class="container">
+                <h2 class="section-title">Try UltraAI Now</h2>
+                <div class="demo-grid">
+                    <div class="demo-card">
+                        <h3>Voice Commands</h3>
+                        <p>Click the microphone and try saying:</p>
+                        <ul>
+                            <li>"Tell me a joke"</li>
+                            <li>"What time is it?"</li>
+                            <li>"Download the info"</li>
+                        </ul>
+                    </div>
+                    <div class="demo-card">
+                        <h3>Chat Interface</h3>
+                        <p>Type messages in the chat window:</p>
+                        <ul>
+                            <li>"Hello"</li>
+                            <li>"How are you?"</li>
+                            <li>"Help me"</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>UltraAI</h3>
+                    <p>Your intelligent assistant for the modern web.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#about">About</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#contact">Contact Us</a></li>
+                        <li><a href="https://github.com/demon9572/ultra-ai-website">GitHub</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 UltraAI. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

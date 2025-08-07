@@ -1,6 +1,6 @@
 const analytics = {
     track: (eventName) => {
-
+        console.log(`Analytics: ${eventName} event tracked`);
     }
 };
 
@@ -86,13 +86,17 @@ function getLocalizedString(key) {
             'formMessagePlaceholder': 'Enter your message',
             'formSubmit': 'Submit',
             'formSubmitted': 'Thank you for your message!',
-            'faqTitle': 'Frequently Asked Questions',
+            'faqTitle': 'Often Asked Questions',
             'faqQ1': 'What is UltraAI?',
-            'faqA1': 'UltraAI is a revolutionary new artificial intelligence platform designed to help you with a variety of tasks.',
-            'faqQ2': 'How can I use UltraAI?',
-            'faqA2': 'You can interact with UltraAI through voice commands or the built-in chatbot.',
-            'faqQ3': 'Is UltraAI free?',
-            'faqA3': 'Yes, the basic features of UltraAI are completely free to use.'
+            'faqA1': 'UltraAI is a modern AI platform that helps you with voice commands, chat conversations, and smart assistance.',
+            'faqQ2': 'How do I use UltraAI?',
+            'faqA2': 'Simply use voice commands by clicking the microphone or type messages in the chat window.',
+            'faqQ3': 'Is UltraAI free to use?',
+            'faqA3': 'Yes, all UltraAI features are completely free and always will be.',
+            'faqQ4': 'What languages does UltraAI support?',
+            'faqA4': 'UltraAI supports 8 languages: English, Spanish, French, German, Italian, Japanese, Chinese, and Russian.',
+            'faqQ5': 'Can I use UltraAI on mobile?',
+            'faqA5': 'Yes, UltraAI works perfectly on all devices including smartphones and tablets.'
         },
         'es': {
             'downloadStarted': '¡Descarga iniciada!',
@@ -219,8 +223,9 @@ function getLocalizedString(key) {
 }
 // Voice recognition feature
 function setupVoiceRecognition() {
-    if ('webkitSpeechRecognition' in window) {
-        const recognition = new webkitSpeechRecognition();
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition = new SpeechRecognition();
         recognition.lang = document.documentElement.lang || 'en-US';
         recognition.interimResults = false;
         recognition.maxAlternatives = 1;
@@ -256,7 +261,8 @@ function setupVoiceRecognition() {
             speakButton.textContent = getLocalizedString('speak');
         };
 
-        recognition.onerror = () => {
+        recognition.onerror = (event) => {
+            console.error('Speech recognition error:', event.error);
             showNotification(getLocalizedString('notUnderstood'), 'error');
             speakButton.disabled = false;
             speakButton.textContent = getLocalizedString('speak');
@@ -273,45 +279,64 @@ function translateContent() {
     });
 }
 
+function setupDownloadButton(button) {
+    button.setAttribute('aria-label', getLocalizedString('download'));
+    button.setAttribute('data-translate', 'download');
+    
+    button.addEventListener('click', () => {
+        button.disabled = true;
+        const spinner = document.createElement('span');
+        spinner.className = 'spinner';
+        spinner.setAttribute('aria-hidden', 'true');
+
+        const downloadingText = document.createElement('span');
+        downloadingText.setAttribute('data-translate', 'downloading');
+        downloadingText.textContent = getLocalizedString('downloading');
+
+        button.textContent = '';
+        button.appendChild(spinner);
+        button.appendChild(downloadingText);
+
+        promptDownload();
+        setTimeout(() => {
+            button.disabled = false;
+            const downloadText = document.createElement('span');
+            downloadText.setAttribute('data-translate', 'download');
+            downloadText.textContent = getLocalizedString('download');
+            button.textContent = '';
+            button.appendChild(downloadText);
+        }, 2000);
+    });
+    
+    button.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            button.click();
+        }
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const downloadButton = document.getElementById('downloadButton');
     if (downloadButton) {
-        downloadButton.setAttribute('aria-label', getLocalizedString('download'));
-        downloadButton.setAttribute('data-translate', 'download');
-        
-        downloadButton.addEventListener('click', () => {
-            downloadButton.disabled = true;
-            const spinner = document.createElement('span');
-            spinner.className = 'spinner';
-            spinner.setAttribute('aria-hidden', 'true');
-
-            const downloadingText = document.createElement('span');
-            downloadingText.setAttribute('data-translate', 'downloading');
-            downloadingText.textContent = getLocalizedString('downloading');
-
-            downloadButton.textContent = '';
-            downloadButton.appendChild(spinner);
-            downloadButton.appendChild(downloadingText);
-
-            promptDownload();
-            setTimeout(() => {
-                downloadButton.disabled = false;
-                const downloadText = document.createElement('span');
-                downloadText.setAttribute('data-translate', 'download');
-                downloadText.textContent = getLocalizedString('download');
-                downloadButton.textContent = '';
-                downloadButton.appendChild(downloadText);
-            }, 2000);
-        });
-        
-        downloadButton.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                downloadButton.click();
-            }
-        });
+        setupDownloadButton(downloadButton);
     } else {
         console.error('Download button not found in the DOM');
+        // Create the button if it doesn't exist
+        const downloadButton = document.createElement('button');
+        downloadButton.id = 'downloadButton';
+        downloadButton.className = 'btn';
+        downloadButton.textContent = getLocalizedString('download');
+        downloadButton.setAttribute('data-translate', 'download');
+        document.body.appendChild(downloadButton);
+        
+        // Re-run the setup for the newly created button
+        setTimeout(() => {
+            const newButton = document.getElementById('downloadButton');
+            if (newButton) {
+                setupDownloadButton(newButton);
+            }
+        }, 100);
     }
 
     setupVoiceRecognition();
@@ -369,12 +394,55 @@ function setupCopyToClipboardButton() {
     document.body.appendChild(copyButton);
 
     copyButton.addEventListener('click', () => {
-        const fileContent = 'Thank you for your interest in UltraAI! Visit our website for more information.';
-        navigator.clipboard.writeText(fileContent).then(() => {
-            showNotification(getLocalizedString('copied'), 'success');
-        }, () => {
-            showNotification(getLocalizedString('copyFailed'), 'error');
-        });
+        const fileContent = `UltraAI - Your Intelligent Assistant
+
+Thank you for downloading UltraAI information!
+
+Features:
+• Voice Commands - Control with your voice
+• Smart Chatbot - Natural conversations
+• Multi-Language Support - 8 languages available
+• Dark Mode - Comfortable viewing
+• Real-time Analytics - Track your usage
+• Mobile Responsive - Works on all devices
+
+How to Use:
+1. Click the microphone for voice commands
+2. Type in the chat window for conversations
+3. Switch languages using the dropdown
+4. Toggle dark mode with the switch
+
+Supported Voice Commands:
+• "Tell me a joke"
+• "What time is it?"
+• "Download the info"
+
+Website: https://demon9572.github.io/ultra-ai-website/
+GitHub: https://github.com/demon9572/ultra-ai-website
+
+© 2024 UltraAI. All rights reserved.`;
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(fileContent).then(() => {
+                showNotification(getLocalizedString('copied'), 'success');
+            }, (err) => {
+                console.error('Clipboard write failed:', err);
+                showNotification(getLocalizedString('copyFailed'), 'error');
+            });
+        } else {
+            // Fallback for older browsers
+            const textArea = document.createElement('textarea');
+            textArea.value = fileContent;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                showNotification(getLocalizedString('copied'), 'success');
+            } catch (err) {
+                console.error('Fallback copy failed:', err);
+                showNotification(getLocalizedString('copyFailed'), 'error');
+            }
+            document.body.removeChild(textArea);
+        }
     });
 }
 
@@ -436,6 +504,8 @@ function setupFAQ() {
         { q: 'faqQ1', a: 'faqA1' },
         { q: 'faqQ2', a: 'faqA2' },
         { q: 'faqQ3', a: 'faqA3' },
+        { q: 'faqQ4', a: 'faqA4' },
+        { q: 'faqQ5', a: 'faqA5' },
     ];
 
     faqs.forEach(faq => {
