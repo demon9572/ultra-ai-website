@@ -527,11 +527,25 @@ function setupFAQ() {
         faqContainer.appendChild(faqItem);
 
         question.addEventListener('click', () => {
-            answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+            const isOpen = answer.style.display === 'block';
+            answer.style.display = isOpen ? 'none' : 'block';
+            const arrow = question.querySelector('::after') || question;
+            question.style.setProperty('--arrow-rotation', isOpen ? '0deg' : '180deg');
         });
     });
 
     document.body.appendChild(faqContainer);
+    
+    // Add FAQ toggle button
+    const faqToggle = document.createElement('button');
+    faqToggle.textContent = 'FAQ';
+    faqToggle.className = 'toggle-btn faq-toggle';
+    faqToggle.style.cssText = 'position: fixed; top: 120px; left: 20px; z-index: 1001; padding: 10px 15px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;';
+    document.body.appendChild(faqToggle);
+    
+    faqToggle.addEventListener('click', () => {
+        faqContainer.classList.toggle('show');
+    });
 }
 
 function setupContactForm() {
@@ -575,6 +589,17 @@ function setupContactForm() {
 
     contactFormContainer.appendChild(form);
     document.body.appendChild(contactFormContainer);
+    
+    // Add contact toggle button
+    const contactToggle = document.createElement('button');
+    contactToggle.textContent = 'Contact';
+    contactToggle.className = 'toggle-btn contact-toggle';
+    contactToggle.style.cssText = 'position: fixed; bottom: 20px; left: 20px; z-index: 1001; padding: 10px 15px; background: #dc3545; color: white; border: none; border-radius: 5px; cursor: pointer;';
+    document.body.appendChild(contactToggle);
+    
+    contactToggle.addEventListener('click', () => {
+        contactFormContainer.classList.toggle('show');
+    });
 
     form.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -604,6 +629,17 @@ function setupChatbot() {
     chatbotContainer.appendChild(chatMessages);
     chatbotContainer.appendChild(chatInput);
     document.body.appendChild(chatbotContainer);
+    
+    // Add chat toggle button
+    const chatToggle = document.createElement('button');
+    chatToggle.textContent = 'Chat';
+    chatToggle.className = 'toggle-btn chat-toggle';
+    chatToggle.style.cssText = 'position: fixed; bottom: 200px; right: 20px; z-index: 1001; padding: 10px 15px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer;';
+    document.body.appendChild(chatToggle);
+    
+    chatToggle.addEventListener('click', () => {
+        chatbotContainer.classList.toggle('show');
+    });
 
     chatInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {

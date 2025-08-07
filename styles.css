@@ -506,7 +506,7 @@ input:checked + .slider:before {
 .chatbot-container {
     position: fixed;
     bottom: 200px;
-    right: 20px;
+    right: -370px;
     width: 350px;
     height: 450px;
     border: 1px solid #ddd;
@@ -516,6 +516,11 @@ input:checked + .slider:before {
     flex-direction: column;
     z-index: 1000;
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    transition: right 0.3s ease;
+}
+
+.chatbot-container.show {
+    right: 20px;
 }
 
 .chat-messages {
@@ -548,7 +553,7 @@ input:checked + .slider:before {
 .contact-form-container {
     position: fixed;
     bottom: 20px;
-    left: 20px;
+    left: -370px;
     width: 350px;
     padding: 20px;
     border: 1px solid #ddd;
@@ -556,6 +561,11 @@ input:checked + .slider:before {
     background-color: #fff;
     z-index: 1000;
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    transition: left 0.3s ease;
+}
+
+.contact-form-container.show {
+    left: 20px;
 }
 
 .contact-form-container form {
@@ -603,7 +613,7 @@ input:checked + .slider:before {
 .faq-container {
     position: fixed;
     top: 120px;
-    left: 20px;
+    left: -370px;
     width: 350px;
     max-height: 400px;
     overflow-y: auto;
@@ -613,6 +623,11 @@ input:checked + .slider:before {
     background-color: #fff;
     z-index: 1000;
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    transition: left 0.3s ease;
+}
+
+.faq-container.show {
+    left: 20px;
 }
 
 .faq-item {
@@ -625,7 +640,18 @@ input:checked + .slider:before {
     padding: 10px;
     border-radius: 8px;
     background: #f8f9fa;
-    transition: background 0.3s;
+    transition: all 0.3s ease;
+    position: relative;
+    padding-right: 40px;
+}
+
+.faq-question::after {
+    content: '▼';
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%) rotate(var(--arrow-rotation, 0deg));
+    transition: transform 0.3s ease;
 }
 
 .faq-question:hover {
@@ -639,6 +665,22 @@ input:checked + .slider:before {
     border-left: 3px solid #007bff;
     background: #f8f9fa;
     border-radius: 0 8px 8px 0;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        max-height: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+    to {
+        opacity: 1;
+        max-height: 200px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
 }
 
 .dark-mode .faq-container {
@@ -648,6 +690,10 @@ input:checked + .slider:before {
 
 .dark-mode .faq-question {
     background: #333;
+    color: #007bff;
+}
+
+.dark-mode .faq-question::after {
     color: #007bff;
 }
 
