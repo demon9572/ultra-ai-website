@@ -316,7 +316,23 @@ function setupDownloadButton(button) {
     });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
+    // Initialize AI model
+    if (typeof aiModel !== 'undefined') {
+        initializeTrainingData();
+        const modelLoaded = await aiModel.loadModel();
+        if (!modelLoaded) {
+            try {
+                await aiModel.trainModel();
+                await aiModel.saveModel();
+                console.log('AI model trained and saved!');
+            } catch (error) {
+                console.log('AI training failed:', error);
+            }
+        } else {
+            console.log('AI model loaded from storage!');
+        }
+    }
     const downloadButton = document.getElementById('downloadButton');
     if (downloadButton) {
         setupDownloadButton(downloadButton);
@@ -342,12 +358,20 @@ document.addEventListener('DOMContentLoaded', function() {
     setupVoiceRecognition();
     translateContent();
     setupDarkModeToggle();
+    setupHighContrastToggle();
     setupLanguageSelector();
     setupCopyToClipboardButton();
     setupChatbot();
     setupContactForm();
     setupFAQ();
     setupSocialMediaButtons();
+
+    const generateAiContentButton = document.getElementById('generateAiContent');
+    if (generateAiContentButton) {
+        generateAiContentButton.addEventListener('click', generateAiContent);
+    }
+
+    setupPersonalizedContent();
 });
 
 function setupLanguageSelector() {
@@ -447,26 +471,31 @@ GitHub: https://github.com/demon9572/ultra-ai-website
 }
 
 function handleChatMessage(message, chatMessages) {
-    const userMessage = document.createElement('div');
-    userMessage.textContent = `You: ${message}`;
-    chatMessages.appendChild(userMessage);
+    if (typeof handleChatMessageWithAI === 'function') {
+        handleChatMessageWithAI(message, chatMessages);
+    } else {
+        // Fallback to original function
+        const userMessage = document.createElement('div');
+        userMessage.textContent = `You: ${message}`;
+        chatMessages.appendChild(userMessage);
 
-    const lowerCaseMessage = message.toLowerCase();
-    let response = getLocalizedString('chatbotNotUnderstood');
+        const lowerCaseMessage = message.toLowerCase();
+        let response = getLocalizedString('chatbotNotUnderstood');
 
-    if (lowerCaseMessage.includes('hello')) {
-        response = getLocalizedString('chatbotGreeting');
-    } else if (lowerCaseMessage.includes('how are you')) {
-        response = getLocalizedString('chatbotFeeling');
-    } else if (lowerCaseMessage.includes('help')) {
-        response = getLocalizedString('chatbotHelp');
+        if (lowerCaseMessage.includes('hello')) {
+            response = getLocalizedString('chatbotGreeting');
+        } else if (lowerCaseMessage.includes('how are you')) {
+            response = getLocalizedString('chatbotFeeling');
+        } else if (lowerCaseMessage.includes('help')) {
+            response = getLocalizedString('chatbotHelp');
+        }
+
+        const botMessage = document.createElement('div');
+        botMessage.textContent = `Bot: ${response}`;
+        chatMessages.appendChild(botMessage);
+
+        speak(response);
     }
-
-    const botMessage = document.createElement('div');
-    botMessage.textContent = `Bot: ${response}`;
-    chatMessages.appendChild(botMessage);
-
-    speak(response);
 }
 
 function setupSocialMediaButtons() {
@@ -659,6 +688,7 @@ function setupDarkModeToggle() {
 
     const toggleInput = document.createElement('input');
     toggleInput.type = 'checkbox';
+    toggleInput.id = 'darkModeToggle'; // Add ID for direct access
 
     const slider = document.createElement('span');
     slider.className = 'slider';
@@ -685,6 +715,81 @@ function setupDarkModeToggle() {
             localStorage.setItem('theme', 'light');
         }
     });
+}
+
+function setupHighContrastToggle() {
+    const toggleContainer = document.createElement('div');
+    toggleContainer.className = 'high-contrast-toggle';
+
+    const toggleSwitch = document.createElement('label');
+    toggleSwitch.className = 'switch';
+
+    const toggleInput = document.createElement('input');
+    toggleInput.type = 'checkbox';
+    toggleInput.id = 'highContrastToggle'; // Add ID for direct access
+
+    const slider = document.createElement('span');
+    slider.className = 'slider';
+
+    toggleSwitch.appendChild(toggleInput);
+    toggleSwitch.appendChild(slider);
+    toggleContainer.appendChild(toggleSwitch);
+    document.body.appendChild(toggleContainer);
+
+    const savedContrast = localStorage.getItem('high-contrast');
+
+    if (savedContrast === 'true') {
+        document.body.classList.add('high-contrast');
+        toggleInput.checked = true;
+    }
+
+    toggleInput.addEventListener('change', () => {
+        if (toggleInput.checked) {
+            document.body.classList.add('high-contrast');
+            localStorage.setItem('high-contrast', 'true');
+        } else {
+            document.body.classList.remove('high-contrast');
+            localStorage.setItem('high-contrast', 'false');
+        }
+    });
+}
+
+function generateAiContent() {
+    const aiGeneratedText = document.getElementById('aiGeneratedText');
+    const placeholderContent = [
+        "The future of AI is not about replacing humans, but augmenting human capabilities.",
+        "Neural networks are revolutionizing data analysis and pattern recognition.",
+        "Personalized learning paths powered by AI adapt to individual student needs.",
+        "Predictive analytics can forecast trends with remarkable accuracy, aiding decision-making.",
+        "Voice interfaces are becoming increasingly sophisticated, enabling natural human-computer interaction."
+    ];
+    const randomIndex = Math.floor(Math.random() * placeholderContent.length);
+    aiGeneratedText.textContent = placeholderContent[randomIndex];
+}
+
+function setupPersonalizedContent() {
+    const personalizedContentPlaceholder = document.querySelector('.personalized-content-placeholder');
+    const loginButton = personalizedContentPlaceholder.querySelector('.btn-secondary');
+
+    // This is a placeholder for actual personalization logic.
+    // In a real application, you would check if a user is logged in
+    // and fetch personalized data.
+    const isLoggedIn = false; // Replace with actual login check
+
+    if (isLoggedIn) {
+        personalizedContentPlaceholder.innerHTML = `
+            <p>Welcome back, User! Here's some content just for you:</p>
+            <ul>
+                <li>Recommended article: 'The Rise of Quantum AI'</li>
+                <li>Your saved preferences: Dark Mode, English</li>
+            </ul>
+        `;
+    } else {
+        loginButton.addEventListener('click', () => {
+            alert('Imagine a login/signup modal appearing here!');
+            // In a real app, trigger a login/signup flow
+        });
+    }
 }
 
 // Add CSS for the spinner

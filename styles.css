@@ -530,6 +530,31 @@ input:checked + .slider:before {
     border-bottom: 1px solid #eee;
 }
 
+.chat-message {
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    border-radius: 12px;
+    max-width: 80%;
+}
+
+.user-message {
+    background: #007bff;
+    color: white;
+    margin-left: auto;
+    text-align: right;
+}
+
+.bot-message {
+    background: #f1f3f4;
+    color: #333;
+    margin-right: auto;
+}
+
+.dark-mode .bot-message {
+    background: #444;
+    color: #fff;
+}
+
 .chat-input {
     border: none;
     padding: 15px;
