@@ -503,77 +503,7 @@ input:checked + .slider:before {
     z-index: 1000;
 }
 
-.chatbot-container {
-    position: fixed;
-    bottom: 200px;
-    right: -370px;
-    width: 350px;
-    height: 450px;
-    border: 1px solid #ddd;
-    border-radius: 15px;
-    background-color: #fff;
-    display: flex;
-    flex-direction: column;
-    z-index: 1000;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    transition: right 0.3s ease;
-}
 
-.chatbot-container.show {
-    right: 20px;
-}
-
-.chat-messages {
-    flex-grow: 1;
-    padding: 15px;
-    overflow-y: auto;
-    border-bottom: 1px solid #eee;
-}
-
-.chat-message {
-    margin-bottom: 10px;
-    padding: 8px 12px;
-    border-radius: 12px;
-    max-width: 80%;
-}
-
-.user-message {
-    background: #007bff;
-    color: white;
-    margin-left: auto;
-    text-align: right;
-}
-
-.bot-message {
-    background: #f1f3f4;
-    color: #333;
-    margin-right: auto;
-}
-
-.dark-mode .bot-message {
-    background: #444;
-    color: #fff;
-}
-
-.chat-input {
-    border: none;
-    padding: 15px;
-    width: 100%;
-    box-sizing: border-box;
-    border-radius: 0 0 15px 15px;
-    font-size: 14px;
-}
-
-.dark-mode .chatbot-container {
-    background-color: #2a2a2a;
-    border-color: #555;
-}
-
-.dark-mode .chat-input {
-    background-color: #333;
-    color: #fff;
-    border-top-color: #555;
-}
 
 .contact-form-container {
     position: fixed;

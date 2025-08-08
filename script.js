@@ -345,7 +345,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setupHighContrastToggle();
     setupLanguageSelector();
     setupCopyToClipboardButton();
-    setupChatbot();
+
     setupContactForm();
     setupFAQ();
     setupSocialMediaButtons();
@@ -454,35 +454,7 @@ GitHub: https://github.com/demon9572/ultra-ai-website
     });
 }
 
-function handleChatMessage(message, chatMessages) {
-    const userMessage = document.createElement('div');
-    userMessage.textContent = `You: ${message}`;
-    userMessage.className = 'chat-message user-message';
-    chatMessages.appendChild(userMessage);
 
-    const lowerCaseMessage = message.toLowerCase();
-    let response = getLocalizedString('chatbotNotUnderstood');
-
-    if (lowerCaseMessage.includes('hello') || lowerCaseMessage.includes('hi')) {
-        response = getLocalizedString('chatbotGreeting');
-    } else if (lowerCaseMessage.includes('how are you')) {
-        response = getLocalizedString('chatbotFeeling');
-    } else if (lowerCaseMessage.includes('help')) {
-        response = getLocalizedString('chatbotHelp');
-    } else if (lowerCaseMessage.includes('time')) {
-        response = new Date().toLocaleTimeString();
-    } else if (lowerCaseMessage.includes('joke')) {
-        response = getLocalizedString('joke');
-    }
-
-    const botMessage = document.createElement('div');
-    botMessage.textContent = `Bot: ${response}`;
-    botMessage.className = 'chat-message bot-message';
-    chatMessages.appendChild(botMessage);
-
-    speak(response);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-}
 
 function setupSocialMediaButtons() {
     const socialMediaContainer = document.createElement('div');
@@ -629,41 +601,7 @@ function setupContactForm() {
     });
 }
 
-function setupChatbot() {
-    const chatbotContainer = document.createElement('div');
-    chatbotContainer.className = 'chatbot-container';
 
-    const chatMessages = document.createElement('div');
-    chatMessages.className = 'chat-messages';
-
-    const chatInput = document.createElement('input');
-    chatInput.type = 'text';
-    chatInput.className = 'chat-input';
-    chatInput.placeholder = getLocalizedString('typeMessage');
-
-    chatbotContainer.appendChild(chatMessages);
-    chatbotContainer.appendChild(chatInput);
-    document.body.appendChild(chatbotContainer);
-    
-    // Add chat toggle button
-    const chatToggle = document.createElement('button');
-    chatToggle.textContent = 'Chat';
-    chatToggle.className = 'toggle-btn chat-toggle';
-    chatToggle.style.cssText = 'position: fixed; bottom: 200px; right: 20px; z-index: 1001; padding: 10px 15px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer;';
-    document.body.appendChild(chatToggle);
-    
-    chatToggle.addEventListener('click', () => {
-        chatbotContainer.classList.toggle('show');
-    });
-
-    chatInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            const message = chatInput.value;
-            chatInput.value = '';
-            handleChatMessage(message, chatMessages);
-        }
-    });
-}
 
 function setupDarkModeToggle() {
     const toggleContainer = document.createElement('div');
