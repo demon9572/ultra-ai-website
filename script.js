@@ -316,23 +316,7 @@ function setupDownloadButton(button) {
     });
 }
 
-document.addEventListener('DOMContentLoaded', async function() {
-    // Initialize AI model
-    if (typeof aiModel !== 'undefined') {
-        initializeTrainingData();
-        const modelLoaded = await aiModel.loadModel();
-        if (!modelLoaded) {
-            try {
-                await aiModel.trainModel();
-                await aiModel.saveModel();
-                console.log('AI model trained and saved!');
-            } catch (error) {
-                console.log('AI training failed:', error);
-            }
-        } else {
-            console.log('AI model loaded from storage!');
-        }
-    }
+document.addEventListener('DOMContentLoaded', function() {
     const downloadButton = document.getElementById('downloadButton');
     if (downloadButton) {
         setupDownloadButton(downloadButton);
@@ -471,31 +455,33 @@ GitHub: https://github.com/demon9572/ultra-ai-website
 }
 
 function handleChatMessage(message, chatMessages) {
-    if (typeof handleChatMessageWithAI === 'function') {
-        handleChatMessageWithAI(message, chatMessages);
-    } else {
-        // Fallback to original function
-        const userMessage = document.createElement('div');
-        userMessage.textContent = `You: ${message}`;
-        chatMessages.appendChild(userMessage);
+    const userMessage = document.createElement('div');
+    userMessage.textContent = `You: ${message}`;
+    userMessage.className = 'chat-message user-message';
+    chatMessages.appendChild(userMessage);
 
-        const lowerCaseMessage = message.toLowerCase();
-        let response = getLocalizedString('chatbotNotUnderstood');
+    const lowerCaseMessage = message.toLowerCase();
+    let response = getLocalizedString('chatbotNotUnderstood');
 
-        if (lowerCaseMessage.includes('hello')) {
-            response = getLocalizedString('chatbotGreeting');
-        } else if (lowerCaseMessage.includes('how are you')) {
-            response = getLocalizedString('chatbotFeeling');
-        } else if (lowerCaseMessage.includes('help')) {
-            response = getLocalizedString('chatbotHelp');
-        }
-
-        const botMessage = document.createElement('div');
-        botMessage.textContent = `Bot: ${response}`;
-        chatMessages.appendChild(botMessage);
-
-        speak(response);
+    if (lowerCaseMessage.includes('hello') || lowerCaseMessage.includes('hi')) {
+        response = getLocalizedString('chatbotGreeting');
+    } else if (lowerCaseMessage.includes('how are you')) {
+        response = getLocalizedString('chatbotFeeling');
+    } else if (lowerCaseMessage.includes('help')) {
+        response = getLocalizedString('chatbotHelp');
+    } else if (lowerCaseMessage.includes('time')) {
+        response = new Date().toLocaleTimeString();
+    } else if (lowerCaseMessage.includes('joke')) {
+        response = getLocalizedString('joke');
     }
+
+    const botMessage = document.createElement('div');
+    botMessage.textContent = `Bot: ${response}`;
+    botMessage.className = 'chat-message bot-message';
+    chatMessages.appendChild(botMessage);
+
+    speak(response);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
 function setupSocialMediaButtons() {
